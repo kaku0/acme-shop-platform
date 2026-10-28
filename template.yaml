@@ -338,7 +338,7 @@ Resources:
     Properties:
       # The path starts with '../..' as this will be evaluated from the
       # platform/build folder, not the platform folder.
-      TemplateURL: ../../shared/templates/dlq.yaml
+      TemplateURL: templates/dlq.yaml
       Parameters:
         AlarmAction: !Ref AlarmTopic
 

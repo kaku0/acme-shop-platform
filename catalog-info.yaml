@@ -1,0 +1,316 @@
+# Backstage catalog for this repository. Shared entries (groups, systems) are identical in every ACME Shop repo.
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: platform
+  title: Commerce Platform
+  description: Shared commerce event bus, event archive and the real-time notification channel used by back-office screens.
+  tags:
+  - python
+  - aws-lambda
+  - eventbridge
+  annotations:
+    github.com/project-slug: kaku0/acme-shop-platform
+    stackrails.io/hosts: events.internal.acme-shop.example
+  links:
+  - url: https://github.com/kaku0/acme-shop-platform
+    title: Source
+spec:
+  type: service
+  lifecycle: production
+  owner: group:cloud-platform-team
+  system: commerce-platform
+  dependsOn:
+  - component:ecom-lib
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: storefront
+  description: The customer-facing web shop and mobile app API.
+spec:
+  owner: group:storefront-team
+  domain: commerce
+  type: product
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: product-catalog
+  description: 'What ACME sells: products, prices and availability.'
+spec:
+  owner: group:catalog-team
+  domain: commerce
+  type: product
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: customer-identity
+  description: Customer accounts and authentication.
+spec:
+  owner: group:identity-team
+  domain: commerce
+  type: product
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: ordering
+  description: Order capture and the order lifecycle.
+spec:
+  owner: group:checkout-team
+  domain: commerce
+  type: product
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: fulfilment
+  description: Getting orders from the warehouse to the customer's door.
+spec:
+  owner: group:fulfilment-team
+  domain: operations
+  type: business
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: payments
+  description: Taking money from customers, safely.
+spec:
+  owner: group:payments-team
+  domain: finance
+  type: business
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: commerce-platform
+  description: Shared event bus, libraries and delivery pipeline for all commerce services.
+spec:
+  owner: group:cloud-platform-team
+  domain: platform
+  type: platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: acme-group
+  description: 'ACME Retail Group: online and in-store retail.'
+spec:
+  type: root
+  profile:
+    displayName: ACME Retail Group
+    email: acme-group@acme-shop.example
+  children:
+  - digital-commerce
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: digital-commerce
+  description: Everything behind the ACME online shop.
+spec:
+  type: business-unit
+  profile:
+    displayName: Digital Commerce
+    email: digital-commerce@acme-shop.example
+  parent: acme-group
+  children:
+  - customer-experience
+  - order-fulfilment
+  - finance-technology
+  - platform-engineering
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: customer-experience
+  description: Storefront, catalogue and customer accounts.
+spec:
+  type: department
+  profile:
+    displayName: Customer Experience
+    email: customer-experience@acme-shop.example
+  parent: digital-commerce
+  children:
+  - storefront-team
+  - catalog-team
+  - identity-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: order-fulfilment
+  description: Checkout, warehouse, delivery and logistics pricing.
+spec:
+  type: department
+  profile:
+    displayName: Order Fulfilment
+    email: order-fulfilment@acme-shop.example
+  parent: digital-commerce
+  children:
+  - checkout-team
+  - fulfilment-team
+  - logistics-pricing-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: finance-technology
+  description: Payments and payment-provider integrations.
+spec:
+  type: department
+  profile:
+    displayName: Finance Technology
+    email: finance-technology@acme-shop.example
+  parent: digital-commerce
+  children:
+  - payments-team
+  - partner-integrations-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: platform-engineering
+  description: Shared cloud platform, libraries and delivery tooling.
+spec:
+  type: department
+  profile:
+    displayName: Platform Engineering
+    email: platform-engineering@acme-shop.example
+  parent: digital-commerce
+  children:
+  - cloud-platform-team
+  - developer-experience-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: storefront-team
+  description: Web shop and mobile app back end.
+spec:
+  type: team
+  profile:
+    displayName: Storefront Team
+    email: storefront-team@acme-shop.example
+  parent: customer-experience
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: catalog-team
+  description: Product catalogue and product data.
+spec:
+  type: team
+  profile:
+    displayName: Catalog Team
+    email: catalog-team@acme-shop.example
+  parent: customer-experience
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: identity-team
+  description: Customer accounts, sign-up and sign-in.
+spec:
+  type: team
+  profile:
+    displayName: Identity Team
+    email: identity-team@acme-shop.example
+  parent: customer-experience
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: checkout-team
+  description: 'Basket to order: order capture and order lifecycle.'
+spec:
+  type: team
+  profile:
+    displayName: Checkout Team
+    email: checkout-team@acme-shop.example
+  parent: order-fulfilment
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: fulfilment-team
+  description: Warehouse picking, packing and parcel delivery.
+spec:
+  type: team
+  profile:
+    displayName: Fulfilment Team
+    email: fulfilment-team@acme-shop.example
+  parent: order-fulfilment
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: logistics-pricing-team
+  description: Delivery cost calculation.
+spec:
+  type: team
+  profile:
+    displayName: Logistics Pricing Team
+    email: logistics-pricing-team@acme-shop.example
+  parent: order-fulfilment
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: payments-team
+  description: 'Customer payments: authorise, capture, refund.'
+spec:
+  type: team
+  profile:
+    displayName: Payments Team
+    email: payments-team@acme-shop.example
+  parent: finance-technology
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: partner-integrations-team
+  description: Integrations with external providers (PSP, carriers).
+spec:
+  type: team
+  profile:
+    displayName: Partner Integrations Team
+    email: partner-integrations-team@acme-shop.example
+  parent: finance-technology
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: cloud-platform-team
+  description: 'Shared AWS platform: event bus, accounts, shared libraries.'
+spec:
+  type: team
+  profile:
+    displayName: Cloud Platform Team
+    email: cloud-platform-team@acme-shop.example
+  parent: platform-engineering
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: developer-experience-team
+  description: CI/CD and developer tooling.
+spec:
+  type: team
+  profile:
+    displayName: Developer Experience Team
+    email: developer-experience-team@acme-shop.example
+  parent: platform-engineering
+  children: []
